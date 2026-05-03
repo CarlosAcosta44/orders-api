@@ -1,23 +1,29 @@
 import { Request, Response } from 'express';
 import { OrderService } from '../services/order.service.js';
 
+// Definimos los tipos de los parámetros de la URL
+interface RouteParams {
+    orderId?: string;
+    itemId?: string;
+    productId?: string;
+}
+
 export class OrderController {
     constructor(private orderService: OrderService) {}
 
     getAllOrders = async (req: Request, res: Response) => {
         try {
             const orders = await this.orderService.getAllOrders();
-            // Implementación básica de filtros (opcional por ahora)
             res.json(orders);
         } catch (error: any) {
             res.status(500).json({ message: error.message });
         }
     }
 
-    getOrderById = async (req: Request, res: Response) => {
+    getOrderById = async (req: Request<RouteParams>, res: Response) => {
         try {
-            const id = parseInt(req.params.orderId);
-            const order = await this.orderService.getOrderById(id);
+            const { orderId } = req.params;
+            const order = await this.orderService.getOrderById(parseInt(orderId!));
             if (!order) return res.status(404).json({ message: 'Order not found' });
             res.json(order);
         } catch (error: any) {
@@ -35,10 +41,10 @@ export class OrderController {
         }
     }
 
-    deleteOrder = async (req: Request, res: Response) => {
+    deleteOrder = async (req: Request<RouteParams>, res: Response) => {
         try {
-            const id = parseInt(req.params.orderId);
-            const deleted = await this.orderService.deleteOrder(id);
+            const { orderId } = req.params;
+            const deleted = await this.orderService.deleteOrder(parseInt(orderId!));
             if (!deleted) return res.status(404).json({ message: 'Order not found' });
             res.status(204).send();
         } catch (error: any) {
@@ -46,11 +52,10 @@ export class OrderController {
         }
     }
 
-    // Métodos para Items
-    getOrderItems = async (req: Request, res: Response) => {
+    getOrderItems = async (req: Request<RouteParams>, res: Response) => {
         try {
-            const id = parseInt(req.params.orderId);
-            const order = await this.orderService.getOrderById(id);
+            const { orderId } = req.params;
+            const order = await this.orderService.getOrderById(parseInt(orderId!));
             if (!order) return res.status(404).json({ message: 'Order not found' });
             res.json(order.items);
         } catch (error: any) {
@@ -58,11 +63,11 @@ export class OrderController {
         }
     }
 
-    addProductToOrder = async (req: Request, res: Response) => {
+    addProductToOrder = async (req: Request<RouteParams>, res: Response) => {
         try {
-            const orderId = parseInt(req.params.orderId);
+            const { orderId } = req.params;
             const { productId, quantity } = req.body;
-            const updatedOrder = await this.orderService.addProductToOrder(orderId, productId, quantity);
+            const updatedOrder = await this.orderService.addProductToOrder(parseInt(orderId!), productId, quantity);
             if (!updatedOrder) return res.status(404).json({ message: 'Order not found' });
             res.status(201).json(updatedOrder);
         } catch (error: any) {
@@ -70,12 +75,11 @@ export class OrderController {
         }
     }
 
-    updateItemQuantity = async (req: Request, res: Response) => {
+    updateItemQuantity = async (req: Request<RouteParams>, res: Response) => {
         try {
-            const orderId = parseInt(req.params.orderId);
-            const itemId = parseInt(req.params.itemId);
+            const { orderId, itemId } = req.params;
             const { quantity } = req.body;
-            const updatedOrder = await this.orderService.updateItemQuantity(orderId, itemId, quantity);
+            const updatedOrder = await this.orderService.updateItemQuantity(parseInt(orderId!), parseInt(itemId!), quantity);
             if (!updatedOrder) return res.status(404).json({ message: 'Order or item not found' });
             res.json(updatedOrder);
         } catch (error: any) {
@@ -83,11 +87,10 @@ export class OrderController {
         }
     }
 
-    removeItem = async (req: Request, res: Response) => {
+    removeItem = async (req: Request<RouteParams>, res: Response) => {
         try {
-            const orderId = parseInt(req.params.orderId);
-            const itemId = parseInt(req.params.itemId);
-            const updatedOrder = await this.orderService.removeItemFromOrder(orderId, itemId);
+            const { orderId, itemId } = req.params;
+            const updatedOrder = await this.orderService.removeItemFromOrder(parseInt(orderId!), parseInt(itemId!));
             if (!updatedOrder) return res.status(404).json({ message: 'Order not found' });
             res.status(204).send();
         } catch (error: any) {
@@ -95,7 +98,6 @@ export class OrderController {
         }
     }
 
-    // Productos (Obligatorio listar y detalle)
     getAllProducts = async (req: Request, res: Response) => {
         try {
             const products = await this.orderService.getAllProducts();
@@ -105,10 +107,10 @@ export class OrderController {
         }
     }
 
-    getProductById = async (req: Request, res: Response) => {
+    getProductById = async (req: Request<RouteParams>, res: Response) => {
         try {
-            const id = parseInt(req.params.productId);
-            const product = await this.orderService.getProductById(id);
+            const { productId } = req.params;
+            const product = await this.orderService.getProductById(parseInt(productId!));
             if (!product) return res.status(404).json({ message: 'Product not found' });
             res.json(product);
         } catch (error: any) {
