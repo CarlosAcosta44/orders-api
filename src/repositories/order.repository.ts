@@ -1,6 +1,10 @@
 import fs from 'fs';
 import path from 'path';
-import { Order, Customer, Product, Supplier } from '../models';
+import { fileURLToPath } from 'url';
+import { Order, Customer, Product, Supplier, OrderItem } from '../models/index.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export class OrderRepository {
     private orders: Order[] = [];
@@ -26,19 +30,16 @@ export class OrderRepository {
     }
 
     private normalizeData() {
-        // Extraer clientes únicos
         const customerMap = new Map<number, Customer>();
         const productMap = new Map<number, Product>();
         const supplierMap = new Map<number, Supplier>();
 
-        this.orders.forEach(order => {
-            // Guardar cliente
+        this.orders.forEach((order: Order) => {
             if (order.customer) {
                 customerMap.set(order.customer.id, order.customer);
             }
 
-            // Guardar productos y proveedores de los items
-            order.items.forEach(item => {
+            order.items.forEach((item: OrderItem) => {
                 if (item.product) {
                     productMap.set(item.product.id, item.product);
                     if (item.product.supplier) {
@@ -53,13 +54,12 @@ export class OrderRepository {
         this.suppliers = Array.from(supplierMap.values());
     }
 
-    // Métodos para Orders
     async findAllOrders(): Promise<Order[]> {
         return this.orders;
     }
 
     async findOrderById(id: number): Promise<Order | undefined> {
-        return this.orders.find(o => o.id === id);
+        return this.orders.find((o: Order) => o.id === id);
     }
 
     async saveOrder(order: Order): Promise<Order> {
@@ -68,7 +68,7 @@ export class OrderRepository {
     }
 
     async updateOrder(id: number, orderData: Partial<Order>): Promise<Order | undefined> {
-        const index = this.orders.findIndex(o => o.id === id);
+        const index = this.orders.findIndex((o: Order) => o.id === id);
         if (index !== -1) {
             this.orders[index] = { ...this.orders[index], ...orderData };
             return this.orders[index];
@@ -77,7 +77,7 @@ export class OrderRepository {
     }
 
     async deleteOrder(id: number): Promise<boolean> {
-        const index = this.orders.findIndex(o => o.id === id);
+        const index = this.orders.findIndex((o: Order) => o.id === id);
         if (index !== -1) {
             this.orders.splice(index, 1);
             return true;
@@ -85,7 +85,6 @@ export class OrderRepository {
         return false;
     }
 
-    // Métodos para Customers y Products (Complementarios)
     async findAllCustomers(): Promise<Customer[]> {
         return this.customers;
     }
@@ -95,6 +94,6 @@ export class OrderRepository {
     }
 
     async findProductById(id: number): Promise<Product | undefined> {
-        return this.products.find(p => p.id === id);
+        return this.products.find((p: Product) => p.id === id);
     }
 }
