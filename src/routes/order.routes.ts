@@ -14,6 +14,8 @@ const orderController = new OrderController(orderService);
 router.get('/orders', orderController.getAllOrders);
 router.get('/orders/:orderId', orderController.getOrderById);
 router.post('/orders', orderController.createOrder);
+router.put('/orders/:orderId', orderController.replaceOrder);
+router.patch('/orders/:orderId', orderController.patchOrder);
 router.delete('/orders/:orderId', orderController.deleteOrder);
 
 // Rutas para los Items de una orden

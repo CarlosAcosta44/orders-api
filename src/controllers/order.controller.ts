@@ -41,6 +41,34 @@ export class OrderController {
         }
     }
 
+    replaceOrder = async (req: Request<RouteParams>, res: Response) => {
+        try {
+            const { orderId } = req.params;
+            const { customerId, items } = req.body;
+            const updatedOrder = await this.orderService.replaceOrder(parseInt(orderId!), customerId, items);
+            if (!updatedOrder) return res.status(404).json({ message: 'Order not found' });
+            res.json(updatedOrder);
+        } catch (error: any) {
+            res.status(400).json({ message: error.message });
+        }
+    }
+
+    patchOrder = async (req: Request<RouteParams>, res: Response) => {
+        try {
+            const { orderId } = req.params;
+            // Permitimos actualizar orderDate o customerId
+            const updateData: any = {};
+            if (req.body.orderDate) updateData.orderDate = req.body.orderDate;
+            if (req.body.customerId) updateData.customer = { id: req.body.customerId };
+
+            const updatedOrder = await this.orderService.patchOrder(parseInt(orderId!), updateData);
+            if (!updatedOrder) return res.status(404).json({ message: 'Order not found' });
+            res.json(updatedOrder);
+        } catch (error: any) {
+            res.status(400).json({ message: error.message });
+        }
+    }
+
     deleteOrder = async (req: Request<RouteParams>, res: Response) => {
         try {
             const { orderId } = req.params;

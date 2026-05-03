@@ -64,8 +64,67 @@ export const swaggerDocument = {
           "404": { "description": "Pedido no encontrado." }
         }
       },
+      "put": {
+        "summary": "Reemplazar completamente un pedido",
+        "parameters": [
+          { "name": "orderId", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "customerId": { "type": "integer", "example": 2 },
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "productId": { "type": "integer", "example": 4 },
+                        "quantity": { "type": "integer", "example": 1 }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Pedido reemplazado exitosamente." },
+          "400": { "description": "Error de validación." },
+          "404": { "description": "Pedido no encontrado." }
+        }
+      },
+      "patch": {
+        "summary": "Actualizar parcialmente un pedido",
+        "parameters": [
+          { "name": "orderId", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "customerId": { "type": "integer", "example": 2 },
+                  "orderDate": { "type": "string", "format": "date-time", "example": "2026-05-01T10:00:00Z" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Pedido actualizado exitosamente." },
+          "404": { "description": "Pedido no encontrado." }
+        }
+      },
       "delete": {
         "summary": "Eliminar o anular un pedido",
+
         "parameters": [
           { "name": "orderId", "in": "path", "required": true, "schema": { "type": "integer" } }
         ],

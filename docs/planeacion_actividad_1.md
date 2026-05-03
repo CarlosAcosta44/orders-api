@@ -44,41 +44,41 @@ orders-api/
 5. [x] Configurar variables de entorno iniciales.
 
 ### Fase 2: Modelado y Acceso a Datos
-1. [ ] Definir modelos/interfaces para: `Customer`, `Order`, `OrderItem`, `Product`, `Supplier`.
-2. [ ] Crear repositorios que carguen los datos desde el archivo `Orders.json` proporcionado.
-3. [ ] **Normalización**: Al cargar el JSON, extraer y almacenar listas únicas de Clientes y Productos para servir los endpoints de consulta.
-4. [ ] Implementar la lógica de persistencia en memoria (usando el JSON como semilla).
+1. [x] Definir modelos/interfaces para: `Customer`, `Order`, `OrderItem`, `Product`, `Supplier`.
+2. [x] Crear repositorios que carguen los datos desde el archivo `Orders.json` proporcionado.
+3. [x] **Normalización**: Al cargar el JSON, extraer y almacenar listas únicas de Clientes y Productos para servir los endpoints de consulta.
+4. [x] Implementar la lógica de persistencia en memoria (usando el JSON como semilla).
 
 ### Fase 3: Lógica de Negocio (Services)
-1. [ ] Implementar `OrderService` con:
+1. [x] Implementar `OrderService` con:
     - Validación de existencia de clientes y productos.
     - Lógica de cálculo automático de `totalAmount` al crear/modificar/eliminar items.
-2. [ ] Implementar servicios para productos y otros recursos complementarios.
+2. [x] Implementar servicios para productos y otros recursos complementarios.
 
 ### Fase 4: Controladores y Rutas (Endpoints)
 Implementar los endpoints obligatorios bajo el prefijo `/api/v1`:
-1. [ ] **Orders**:
+1. [x] **Orders**:
     - `GET /orders` (Listado con paginación/filtros).
     - `GET /orders/{id}` (Detalle con items y cliente).
     - `POST /orders` (Creación con validación).
     - `PUT /orders/{id}` (Reemplazo completo).
     - `PATCH /orders/{id}` (Actualización parcial).
     - `DELETE /orders/{id}` (Eliminación/Anulación).
-2. [ ] **Order Items**:
+2. [x] **Order Items**:
     - `GET /orders/{id}/items`
     - `POST /orders/{id}/items` (Agregación con recálculo).
     - `PATCH /orders/{id}/items/{itemId}` (Edición con recálculo).
     - `DELETE /orders/{id}/items/{itemId}` (Eliminación con recálculo).
-3. [ ] **Products**:
+3. [x] **Products**:
     - `GET /products` (Listado).
     - `GET /products/{id}` (Detalle con proveedor).
-4. [ ] **Sistema**:
+4. [x] **Sistema**:
     - `GET /health` (Estado del servicio).
     - `GET /docs` (Swagger UI).
 
 ### Fase 5: Documentación y Calidad
-1. [ ] Configurar Swagger para autogenerar documentación de los endpoints.
-2. [ ] Implementar manejo de errores consistente (400, 404, 409, 500).
+1. [x] Configurar Swagger para autogenerar documentación de los endpoints.
+2. [x] Implementar manejo de errores consistente (400, 404, 409, 500).
 3. [ ] Realizar pruebas manuales (Postman/Thunder Client) según la rúbrica.
 
 ### Fase 6: Despliegue y Entrega
