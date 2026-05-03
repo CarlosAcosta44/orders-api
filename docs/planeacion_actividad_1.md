@@ -82,7 +82,7 @@ Implementar los endpoints obligatorios bajo el prefijo `/api/v1`:
 3. [ ] Realizar pruebas manuales (Postman/Thunder Client) según la rúbrica.
 
 ### Fase 6: Despliegue y Entrega
-1. [ ] Preparar el archivo `README.md` con instrucciones de instalación.
+1. [x] Preparar el archivo `README.md` con instrucciones de instalación.
 2. [ ] Etiquetar versión final como `v1.0.0` (SemVer).
 3. [ ] Desplegar en plataforma (Render/Vercel/RailWay).
 
