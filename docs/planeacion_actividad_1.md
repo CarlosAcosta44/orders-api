@@ -37,11 +37,11 @@ orders-api/
 ## 4. Paso a Paso de la Implementación
 
 ### Fase 1: Configuración Inicial
-1. [ ] Inicializar repositorio Git y configurar ramas (main, develop).
-2. [ ] Inicializar proyecto Node.js (`npm init`).
-3. [ ] Instalar dependencias base (express, dotenv, cors, swagger-ui-express).
-4. [ ] Configurar TypeScript (usaremos TS según la imagen `index.ts`).
-5. [ ] Configurar variables de entorno iniciales.
+1. [x] Inicializar repositorio Git y configurar ramas (main, develop).
+2. [x] Inicializar proyecto Node.js (`npm init`).
+3. [x] Instalar dependencias base (express, dotenv, cors, swagger-ui-express).
+4. [x] Configurar TypeScript (usaremos TS según la imagen `index.ts`).
+5. [x] Configurar variables de entorno iniciales.
 
 ### Fase 2: Modelado y Acceso a Datos
 1. [ ] Definir modelos/interfaces para: `Customer`, `Order`, `OrderItem`, `Product`, `Supplier`.
