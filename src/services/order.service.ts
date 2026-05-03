@@ -54,6 +54,54 @@ export class OrderService {
         return this.orderRepository.saveOrder(newOrder);
     }
 
+    async replaceOrder(orderId: number, customerId: number, itemsData: { productId: number, quantity: number }[]): Promise<Order | undefined> {
+        const existingOrder = await this.orderRepository.findOrderById(orderId);
+        if (!existingOrder) return undefined;
+
+        const customers = await this.orderRepository.findAllCustomers();
+        const customer = customers.find((c: Customer) => c.id === customerId);
+        if (!customer) throw new Error(`Customer with ID ${customerId} not found`);
+
+        const items: OrderItem[] = [];
+        for (const item of itemsData) {
+            const product = await this.orderRepository.findProductById(item.productId);
+            if (!product) throw new Error(`Product with ID ${item.productId} not found`);
+            
+            items.push({
+                id: Math.floor(Math.random() * 10000),
+                product,
+                unitPrice: product.unitPrice,
+                quantity: item.quantity
+            });
+        }
+
+        existingOrder.customer = customer;
+        existingOrder.items = items;
+        existingOrder.totalAmount = this.calculateTotal(items);
+
+        return this.orderRepository.updateOrder(orderId, existingOrder);
+    }
+
+    async patchOrder(orderId: number, updateData: Partial<Order>): Promise<Order | undefined> {
+        const existingOrder = await this.orderRepository.findOrderById(orderId);
+        if (!existingOrder) return undefined;
+
+        // Si envían un nuevo customerId (aunque deberíamos cambiar el modelo, usaremos customer directamente)
+        if (updateData.customer) {
+             const customers = await this.orderRepository.findAllCustomers();
+             const newCustomer = customers.find((c: Customer) => c.id === updateData.customer?.id);
+             if (newCustomer) {
+                 existingOrder.customer = newCustomer;
+             }
+        }
+
+        if (updateData.orderDate) {
+            existingOrder.orderDate = updateData.orderDate;
+        }
+
+        return this.orderRepository.updateOrder(orderId, existingOrder);
+    }
+
     async addProductToOrder(orderId: number, productId: number, quantity: number): Promise<Order | undefined> {
         const order = await this.orderRepository.findOrderById(orderId);
         if (!order) return undefined;
