@@ -4,6 +4,9 @@ import dotenv from 'dotenv';
 import swaggerUi from 'swagger-ui-express';
 import { swaggerDocument } from './swagger.js';
 import orderRoutes from './routes/order.routes.js';
+import customerRoutes from './routes/customer.routes.js';
+import supplierRoutes from './routes/supplier.routes.js';
+import productRoutes from './routes/product.routes.js';
 
 dotenv.config();
 
@@ -13,8 +16,11 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-// Prefijo obligatorio según la guía
+// Rutas de la aplicación
 app.use('/api/v1', orderRoutes);
+app.use('/api/v1', customerRoutes);
+app.use('/api/v1', supplierRoutes);
+app.use('/api/v1', productRoutes);
 
 // Documentación de la API
 app.use('/api/v1/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
