@@ -122,14 +122,16 @@ export class OrderService {
         return this.orderRepository.updateOrder(orderId, order);
     }
 
-    async updateItemQuantity(orderId: number, itemId: number, quantity: number): Promise<Order | undefined> {
+    async updateOrderItem(orderId: number, itemId: number, data: { quantity?: number, unitPrice?: number }): Promise<Order | undefined> {
         const order = await this.orderRepository.findOrderById(orderId);
         if (!order) return undefined;
 
         const item = order.items.find((i: OrderItem) => i.id === itemId);
         if (!item) throw new Error(`Item with ID ${itemId} not found in order ${orderId}`);
 
-        item.quantity = quantity;
+        if (data.quantity !== undefined) item.quantity = data.quantity;
+        if (data.unitPrice !== undefined) item.unitPrice = data.unitPrice;
+        
         order.totalAmount = this.calculateTotal(order.items);
 
         return this.orderRepository.updateOrder(orderId, order);

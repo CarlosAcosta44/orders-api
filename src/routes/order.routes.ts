@@ -21,11 +21,7 @@ router.delete('/orders/:orderId', orderController.deleteOrder);
 // Rutas para los Items de una orden
 router.get('/orders/:orderId/items', orderController.getOrderItems);
 router.post('/orders/:orderId/items', orderController.addProductToOrder);
-router.patch('/orders/:orderId/items/:itemId', orderController.updateItemQuantity);
+router.patch('/orders/:orderId/items/:itemId', orderController.updateOrderItem);
 router.delete('/orders/:orderId/items/:itemId', orderController.removeItem);
-
-// Rutas obligatorias para Productos
-router.get('/products', orderController.getAllProducts);
-router.get('/products/:productId', orderController.getProductById);
 
 export default router;
