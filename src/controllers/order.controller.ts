@@ -103,11 +103,11 @@ export class OrderController {
         }
     }
 
-    updateItemQuantity = async (req: Request<RouteParams>, res: Response) => {
+    updateOrderItem = async (req: Request<RouteParams>, res: Response) => {
         try {
             const { orderId, itemId } = req.params;
-            const { quantity } = req.body;
-            const updatedOrder = await this.orderService.updateItemQuantity(parseInt(orderId!), parseInt(itemId!), quantity);
+            const { quantity, unitPrice } = req.body;
+            const updatedOrder = await this.orderService.updateOrderItem(parseInt(orderId!), parseInt(itemId!), { quantity, unitPrice });
             if (!updatedOrder) return res.status(404).json({ message: 'Order or item not found' });
             res.json(updatedOrder);
         } catch (error: any) {
@@ -126,23 +126,5 @@ export class OrderController {
         }
     }
 
-    getAllProducts = async (req: Request, res: Response) => {
-        try {
-            const products = await this.orderService.getAllProducts();
-            res.json(products);
-        } catch (error: any) {
-            res.status(500).json({ message: error.message });
-        }
-    }
 
-    getProductById = async (req: Request<RouteParams>, res: Response) => {
-        try {
-            const { productId } = req.params;
-            const product = await this.orderService.getProductById(parseInt(productId!));
-            if (!product) return res.status(404).json({ message: 'Product not found' });
-            res.json(product);
-        } catch (error: any) {
-            res.status(500).json({ message: error.message });
-        }
-    }
 }
