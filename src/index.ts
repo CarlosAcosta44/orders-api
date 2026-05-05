@@ -25,6 +25,15 @@ app.use('/api/v1', productRoutes);
 // Documentación de la API
 app.use('/api/v1/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
+// Bienvenido
+app.get('/', (req, res) => {
+    res.send(`
+        <div>
+            <p>La API está funcionando correctamente puedes acceder a la documentacion agregando /api/v1/docs a la URL o api/v1/health para verificar el estado del servicio.</p>
+        </div>
+    `);
+});
+
 app.get('/api/v1/health', (req, res) => {
     res.json({ status: 'ok', message: 'API is running' });
 });
